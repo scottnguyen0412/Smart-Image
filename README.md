@@ -24,4 +24,8 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 - Shadcn/ui (UI Designed)
 
+## Note
+
+- Folder Have ( ). It won't affect to route
+
 # Smart-Image
