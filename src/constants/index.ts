@@ -1,41 +1,41 @@
 export const navLinks = [
     {
-      label: "Home",
+      label: "Trang Chủ",
       route: "/",
       icon: "/assets/icons/home.svg",
     },
     {
-      label: "Image Restore",
+      label: "Khôi Phục Hình Ảnh",
       route: "/transformations/add/restore",
       icon: "/assets/icons/image.svg",
     },
     {
-      label: "Generative Fill",
+      label: "Tạo Mẫu Sinh Động",
       route: "/transformations/add/fill",
       icon: "/assets/icons/stars.svg",
     },
     {
-      label: "Object Remove",
+      label: "Loại Bỏ Vật Thể",
       route: "/transformations/add/remove",
       icon: "/assets/icons/scan.svg",
     },
     {
-      label: "Object Recolor",
+      label: "Đổi Màu Đối Tượng",
       route: "/transformations/add/recolor",
       icon: "/assets/icons/filter.svg",
     },
     {
-      label: "Background Remove",
+      label: "Xoá Phông Nền",
       route: "/transformations/add/removeBackground",
       icon: "/assets/icons/camera.svg",
     },
     {
-      label: "Profile",
+      label: "Hồ Sơ",
       route: "/profile",
       icon: "/assets/icons/profile.svg",
     },
     {
-      label: "Buy Credits",
+      label: "Mua Tín Dụng",
       route: "/credits",
       icon: "/assets/icons/bag.svg",
     },
