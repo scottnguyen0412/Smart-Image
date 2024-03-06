@@ -23,9 +23,11 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 ## Library
 
 - Shadcn/ui (UI Designed)
+- Clerk Authentication
 
 ## Note
 
 - Folder Have ( ). It won't affect to route
+- With Clerk Authen. (If your application uses the src/ directory, your middleware.ts file should be placed inside the src/ folder. If you are not using a src/ directory, place the middleware.ts file in your root directory)
 
 # Smart-Image
