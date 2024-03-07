@@ -30,4 +30,8 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 - Folder Have ( ). It won't affect to route
 - With Clerk Authen. (If your application uses the src/ directory, your middleware.ts file should be placed inside the src/ folder. If you are not using a src/ directory, place the middleware.ts file in your root directory)
 
+<link href="https://smart-image-topaz.vercel.app/sign-in?redirect_url=https%3A%2F%2Fsmart-image-topaz.vercel.app%2F">
+https://smart-image-topaz.vercel.app/sign-in?redirect_url=https%3A%2F%2Fsmart-image-topaz.vercel.app%2F
+</link>
+
 # Smart-Image
