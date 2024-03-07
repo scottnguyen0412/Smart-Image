@@ -6,27 +6,27 @@ export const navLinks = [
     },
     {
       label: "Khôi Phục Hình Ảnh",
-      route: "/transformations/add/restore",
+      route: "/transformations/create/restore",
       icon: "/assets/icons/image.svg",
     },
     {
       label: "Tạo Mẫu Sinh Động",
-      route: "/transformations/add/fill",
+      route: "/transformations/create/fill",
       icon: "/assets/icons/stars.svg",
     },
     {
       label: "Loại Bỏ Vật Thể",
-      route: "/transformations/add/remove",
+      route: "/transformations/create/remove",
       icon: "/assets/icons/scan.svg",
     },
     {
       label: "Đổi Màu Đối Tượng",
-      route: "/transformations/add/recolor",
+      route: "/transformations/create/recolor",
       icon: "/assets/icons/filter.svg",
     },
     {
       label: "Xoá Phông Nền",
-      route: "/transformations/add/removeBackground",
+      route: "/transformations/create/removeBackground",
       icon: "/assets/icons/camera.svg",
     },
     {
@@ -122,28 +122,28 @@ export const navLinks = [
   export const transformationTypes = {
     restore: {
       type: "restore",
-      title: "Restore Image",
+      title: "Khôi Phục Hình Ảnh",
       subTitle: "Refine images by removing noise and imperfections",
       config: { restore: true },
       icon: "image.svg",
     },
     removeBackground: {
       type: "removeBackground",
-      title: "Background Remove",
+      title: "Xoá Phông Nền",
       subTitle: "Removes the background of the image using AI",
       config: { removeBackground: true },
       icon: "camera.svg",
     },
     fill: {
       type: "fill",
-      title: "Generative Fill",
+      title: "Tạo Mẫu Sinh Động",
       subTitle: "Enhance an image's dimensions using AI outpainting",
       config: { fillBackground: true },
       icon: "stars.svg",
     },
     remove: {
       type: "remove",
-      title: "Object Remove",
+      title: "Loại Bỏ Vật Thể",
       subTitle: "Identify and eliminate objects from images",
       config: {
         remove: { prompt: "", removeShadow: true, multiple: true },
@@ -152,7 +152,7 @@ export const navLinks = [
     },
     recolor: {
       type: "recolor",
-      title: "Object Recolor",
+      title: "Đổi Màu Đối Tượng",
       subTitle: "Identify and recolor objects from the image",
       config: {
         recolor: { prompt: "", to: "", multiple: true },
