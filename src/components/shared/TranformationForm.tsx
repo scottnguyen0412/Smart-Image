@@ -17,10 +17,11 @@ import {
     SelectValue,
   } from "@/components/ui/select"
   
-import { aspectRatioOptions, defaultValues, transformationTypes } from "@/constants"
+import { aspectRatioOptions, creditFee, defaultValues, transformationTypes } from "@/constants"
 import { CustomField } from "./CustomField"
-import { useState } from "react"
-import { AspectRatioKey, debounce } from "@/lib/utils"
+import { useState, useTransition } from "react"
+import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils"
+import { updateCredits } from "@/lib/actions/user.actions"
 export const formSchema = z.object({
     title: z.string(),
     aspectRatio: z.string().optional(),
@@ -41,6 +42,9 @@ const TranformationForm = ({action, data = null,
     const [isTransforming,  setIsTransforming] = useState(false);
 
     const [transformationConfig, setTransformationConfig] = useState(config)
+
+    const [isPending, startTransition] = useTransition()
+
     // 1. Define your form.
 
     // if you create new image then have empty blank form
@@ -100,13 +104,25 @@ const TranformationForm = ({action, data = null,
             }, 1000)
         }
 
-    // handle tranform
-    const onTranformHandle = () => {}
+    // handle tranform: return to update credit
+    const onTranformHandle = async () => {
+        setIsTransforming(true);
+        setTransformationConfig(
+            deepMergeObjects(transformationConfig, newTransformation)
+        )
+
+        setNewTransformation(null)
+
+        startTransition(async () => {
+            // await updateCredits(userId, creditFee);
+        })
+
+    }
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <CustomField control={form.control} name="title" 
-        formLabel="Image Title"
+        formLabel="Tiêu Đề Ảnh"
         render={({field}) => <Input {...field} className="input-field"/>}
         />
         {/* Display with type is fill */}
@@ -114,12 +130,12 @@ const TranformationForm = ({action, data = null,
             <CustomField 
                 control={form.control}
                 name="aspectRatio"
-                formLabel="Aspect Ratio"
+                formLabel="Tỷ lệ khung hình"
                 className="w-full"
                 render={({field}) => (
                 <Select onValueChange={(value) => onSelectField(value, field.onChange)}>
                     <SelectTrigger className="select-field">
-                        <SelectValue placeholder="Select size" />
+                        <SelectValue placeholder="Lựa Chọn Kích Thước" />
                     </SelectTrigger>
                     <SelectContent>
                         {/* Trả về một mảng với các key vd: ["1.1", "4.3", "16.9"] */}
@@ -144,7 +160,7 @@ const TranformationForm = ({action, data = null,
                 <CustomField 
                     control={form.control}
                     name="prompt"
-                    formLabel={ type === 'remove' ? 'Object to Remove' : 'Object to Recolor'}
+                    formLabel={ type === 'remove' ? 'Vật Thể Cần Loại Bỏ' : 'Vật Thể Cần Đổi Màu'}
                     className="w-full"
                     render={({field}) => ( 
                     <Input value={field.value} className="input-field"
@@ -154,7 +170,7 @@ const TranformationForm = ({action, data = null,
                 />
             {type === 'recolor' && (
                 <CustomField control={form.control} name="color" 
-                formLabel="Replacement Color"
+                formLabel="Màu Sắc Thay Thế"
                 className="w-full"
                 render={({field}) => (
                     <Input value={field.value} className="input-field"
