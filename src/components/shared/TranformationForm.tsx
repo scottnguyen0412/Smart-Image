@@ -20,9 +20,7 @@ import {
 import { aspectRatioOptions, defaultValues, transformationTypes } from "@/constants"
 import { CustomField } from "./CustomField"
 import { useState } from "react"
-import { AspectRatioKey } from "@/lib/utils"
-import { config } from "process"
-
+import { AspectRatioKey, debounce } from "@/lib/utils"
 export const formSchema = z.object({
     title: z.string(),
     aspectRatio: z.string().optional(),
@@ -90,7 +88,16 @@ const TranformationForm = ({action, data = null,
     // handle remove or recolor object
     const onInputChangeHandle = (fieldName: string, value: string, 
         type: string, onChangeField: (value: string) => void) =>  {
-            
+            debounce(() => {
+                setNewTransformation((prev: any) => ({
+                    ...prev,
+                    [type]: {
+                        ...prev?.[type],
+                        [fieldName === 'prompt' ? 'prompt':'to'] : value
+                    } 
+                }))
+                return onChangeField(value);
+            }, 1000)
         }
 
     // handle tranform

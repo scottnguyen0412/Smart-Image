@@ -86,6 +86,8 @@ export function removeKeysFromQuery({
 }
 
 // DEBOUNCE
+// tránh việc thực thi hành động quá nhanh 
+// và giúp tối ưu hoá hiệu suất trong các tình huống như tìm kiếm theo từ khóa, gõ phím, hoặc xử lý sự kiện người dùng khác.
 export const debounce = (func: (...args: any[]) => void, delay: number) => {
   let timeoutId: NodeJS.Timeout | null;
   return (...args: any[]) => {
