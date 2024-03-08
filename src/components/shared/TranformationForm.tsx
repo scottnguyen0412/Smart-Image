@@ -22,6 +22,7 @@ import { CustomField } from "./CustomField"
 import { useState, useTransition } from "react"
 import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils"
 import { updateCredits } from "@/lib/actions/user.actions"
+import MediaUpload from "./MediaUpload"
 export const formSchema = z.object({
     title: z.string(),
     aspectRatio: z.string().optional(),
@@ -182,16 +183,33 @@ const TranformationForm = ({action, data = null,
             </div>
         )}
 
+        <div className="media-uploader-field">
+            <CustomField
+                control={form.control}
+                name="publicId"
+                className="flex size-full flex-col"
+                render={({field}) => (
+                    <MediaUpload
+                        onValueChange = {field.onChange}
+                        setImage={setImage}
+                        publicId={field.value}
+                        image={image}
+                        type={type}
+                    />
+                )}
+            />
+        </div>
+
+        {/* apply and submit button */}
         <div className="flex flex-col gap-4">
+            <Button type="button" className="submit-button capitalize" 
+            disabled={isTransforming || newTransformation === null}
+            onClick={onTranformHandle}
+            >{isSubmitting ? 'Tranforming...' : 'Apply Tranformation'}</Button>
 
-        <Button type="button" className="submit-button capitalize" 
-        disabled={isTransforming || newTransformation === null}
-        onClick={onTranformHandle}
-        >{isSubmitting ? 'Tranforming...' : 'Apply Tranformation'}</Button>
-
-        <Button type="submit" className="submit-button capitalize" 
-        // disable when user is submitting
-        disabled={isSubmitting}>{isSubmitting ? 'Submitting...' : 'Save Image'}</Button>
+            <Button type="submit" className="submit-button capitalize" 
+            // disable when user is submitting
+            disabled={isSubmitting}>{isSubmitting ? 'Submitting...' : 'Save Image'}</Button>
         </div>
 
       </form>
