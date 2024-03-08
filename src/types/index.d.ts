@@ -1,4 +1,4 @@
-// Định nghĩa interface chung
+// Định nghĩa interface
 // ====== USER PARAMS
 declare type CreateUserParams = {
     clerkId: string;
@@ -113,6 +113,7 @@ declare type CreateUserParams = {
   };
   
   declare type SearchParamProps = {
+    // auto get params
     params: { id: string; type: TransformationTypeKey };
     searchParams: { [key: string]: string | string[] | undefined };
   };
