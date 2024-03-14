@@ -21,10 +21,10 @@ const MediaUpload = ({onValueChange, setImage, image, publicId, type}: MediaUplo
         setImage((prev: any) => {
             return({
                 ...prev,
-                publicId: result?.info?.public_Id,
+                publicId: result?.info?.public_id,
                 width: result?.info?.width,
                 height: result?.info?.height,
-                secureUrl: result?.info?.secure_url
+                secureURL: result?.info?.secure_url
             })
         })
         onValueChange(result?.info?.public_id)

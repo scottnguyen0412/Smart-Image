@@ -23,6 +23,12 @@ import { useState, useTransition } from "react"
 import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils"
 import { updateCredits } from "@/lib/actions/user.actions"
 import MediaUpload from "./MediaUpload"
+import TransformedImage from "./TransformedImage"
+import { getCldImageUrl } from "next-cloudinary"
+import { addImage, updateImage } from "@/lib/actions/image.actions"
+import { useRouter } from "next/navigation"
+
+
 export const formSchema = z.object({
     title: z.string(),
     aspectRatio: z.string().optional(),
@@ -40,14 +46,15 @@ const TranformationForm = ({action, data = null,
     const [newTransformation, setNewTransformation] = useState<Transformations | null>(null);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isTransforming,  setIsTransforming] = useState(false);
+    const [isTransforming, setIsTransforming] = useState(false);
 
     const [transformationConfig, setTransformationConfig] = useState(config)
 
     const [isPending, startTransition] = useTransition()
 
+    const router = useRouter();
     // 1. Define your form.
-
+        
     // if you create new image then have empty blank form
     // However if you updated image, it will be take old data and fill to box
     const initValue = data && action === 'Update' ? {
@@ -57,16 +64,81 @@ const TranformationForm = ({action, data = null,
         prompt: data?.prompt,
         publicId: data?.publicId,
     } : defaultValues
-  const form = useForm<z.infer<typeof formSchema>>({
+    const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: initValue
   })
  
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    console.log(values)
+    setIsSubmitting(true);
+    if(data || image) {
+        // get image from cloudinary
+        const transformationURL = getCldImageUrl({
+            width: image?.width,
+            height: image?.height,
+            src: image?.publicId,
+            ...transformationConfig
+        });
+
+        const imageData = {
+            title: values.title,
+            publicId: image?.publicId,
+            transformationType: type,
+            width: image?.width,
+            height: image?.height,
+            config: transformationConfig,
+            secureURL: image?.secureURL,
+            transformationURL,
+            aspectRatio: values.aspectRatio,
+            prompt: values.prompt,
+            color: values.color
+        }
+        // action add image
+        if(action === 'Add') {
+            try {
+                const newImage = await addImage({
+                    image: imageData,
+                    userId,
+                    path: '/'
+                })
+
+                if(newImage){
+                    form.reset();
+                    setImage(data);
+                    router.push(`/transformations/${newImage._id}`)
+                }
+            } catch (error) {
+                console.log(error);
+                
+            }
+        }
+
+        // action update image
+        if(action === 'Update') {
+            try {
+                const updatedImage = await updateImage({
+                    image: {
+                        ...imageData,
+                        _id: data._id
+                    },
+                    userId,
+                    path: `/transformations/${data._id}`
+                })
+
+                if(updatedImage){
+                    router.push(`/transformations/${updatedImage._id}`)
+                }
+            } catch (error) {
+                console.log(error);
+                
+            }
+        }
+    }
+    setIsSubmitting(false);
+    // console.log(values)
   }
 
     // handle select field
@@ -77,8 +149,8 @@ const TranformationForm = ({action, data = null,
 
         setImage((prev: any) => {
             // return object
-            return({
-                // get value previoú and update new value
+            return ({
+                // get value previous and update new value
                 ...prev,
                 aspecRatio: imageSize.aspectRatio,
                 width: imageSize.width,
@@ -101,24 +173,22 @@ const TranformationForm = ({action, data = null,
                         [fieldName === 'prompt' ? 'prompt':'to'] : value
                     } 
                 }))
-                return onChangeField(value);
-            }, 1000)
+            }, 1000);
+            return onChangeField(value);
         }
 
-    // handle tranform: return to update credit
+    // handle tranform with credit fee
     const onTranformHandle = async () => {
         setIsTransforming(true);
         setTransformationConfig(
-            deepMergeObjects(transformationConfig, newTransformation)
+            deepMergeObjects(newTransformation, transformationConfig)
         )
-
         setNewTransformation(null)
-
         startTransition(async () => {
-            // await updateCredits(userId, creditFee);
+            await updateCredits(userId, -1);
         })
-
     }
+    
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -134,7 +204,8 @@ const TranformationForm = ({action, data = null,
                 formLabel="Tỷ lệ khung hình"
                 className="w-full"
                 render={({field}) => (
-                <Select onValueChange={(value) => onSelectField(value, field.onChange)}>
+                <Select onValueChange={(value) => onSelectField(value, field.onChange)} 
+                    value={field.value}>
                     <SelectTrigger className="select-field">
                         <SelectValue placeholder="Lựa Chọn Kích Thước" />
                     </SelectTrigger>
@@ -183,6 +254,7 @@ const TranformationForm = ({action, data = null,
             </div>
         )}
 
+        {/* upload image */}
         <div className="media-uploader-field">
             <CustomField
                 control={form.control}
@@ -198,14 +270,23 @@ const TranformationForm = ({action, data = null,
                     />
                 )}
             />
+            <TransformedImage 
+                image={image}
+                type={type}
+                title={form.getValues().title}
+                isTransforming = {isTransforming}
+                setIsTransforming = {setIsTransforming}
+                transformationConfig = {transformationConfig}
+            />
         </div>
+
 
         {/* apply and submit button */}
         <div className="flex flex-col gap-4">
             <Button type="button" className="submit-button capitalize" 
             disabled={isTransforming || newTransformation === null}
             onClick={onTranformHandle}
-            >{isSubmitting ? 'Tranforming...' : 'Apply Tranformation'}</Button>
+            >{isTransforming ? 'Tranforming...' : 'Apply Tranformation'}</Button>
 
             <Button type="submit" className="submit-button capitalize" 
             // disable when user is submitting
