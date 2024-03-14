@@ -28,6 +28,7 @@ import { getCldImageUrl } from "next-cloudinary"
 import { addImage, updateImage } from "@/lib/actions/image.actions"
 import { useRouter } from "next/navigation"
 import { NotEnoughCreditsModal } from "./NotEnoughCreditsModal"
+import { FileDiff } from "lucide-react"
 
 
 export const formSchema = z.object({
@@ -293,7 +294,7 @@ const TranformationForm = ({action, data = null,
         {/* apply and submit button */}
         <div className="flex flex-col gap-4">
             <Button type="button" className="submit-button capitalize" 
-            disabled={isTransforming || newTransformation === null}
+            disabled={isTransforming || newTransformation === null || form.getValues().title === ''}
             onClick={onTranformHandle}
             >{isTransforming ? 'Tranforming...' : 'Apply Tranformation'}</Button>
 

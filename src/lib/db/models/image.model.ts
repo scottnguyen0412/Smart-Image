@@ -3,7 +3,7 @@ import { model, models, Schema } from "mongoose";
 
 // extends: kế thưad lớp cơ sở (base class)
 // và có thể định nghĩa thêm các thuộc tính và phương thức riêng của nó. 
-export interface Image extends Document {
+export interface IImage extends Document {
     title: string;
     transformationType: string;
     publicId: string;
