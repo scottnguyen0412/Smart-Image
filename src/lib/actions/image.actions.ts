@@ -119,7 +119,7 @@ export async function getAllImage({limit = 9, page = 1, searchQuery = ''}: {
         
 
         const {resources} = await cloudinary.search.expression(expression).execute();
-        console.log(resources);
+        // console.log(resources);
         
         const resourceIds = resources.map((resource: any) => {
             return(resource.public_id)
@@ -127,12 +127,13 @@ export async function getAllImage({limit = 9, page = 1, searchQuery = ''}: {
             
             let query = {};
             if(searchQuery) {
-                query = {
-                    publicId: {
-                        $in: resourceIds
-                    }
-                }
-                console.log(query);
+                // search by title in db
+                const titleQuery = { title: { $regex: searchQuery, $options: 'i' } };
+                
+                // search by tags in cloudinary
+                const publicIdQuery = { publicId: { $in: resourceIds } };
+                query = { $or: [titleQuery, publicIdQuery] };
+                // console.log(query);
             }
             
 
