@@ -28,8 +28,6 @@ import { getCldImageUrl } from "next-cloudinary"
 import { addImage, updateImage } from "@/lib/actions/image.actions"
 import { useRouter } from "next/navigation"
 import { NotEnoughCreditsModal } from "./NotEnoughCreditsModal"
-import { FileDiff } from "lucide-react"
-
 
 export const formSchema = z.object({
     title: z.string(),
@@ -70,7 +68,7 @@ const TranformationForm = ({action, data = null,
     resolver: zodResolver(formSchema),
     defaultValues: initValue
   })
- 
+  
   // 2. Define a submit handler.
     async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
@@ -149,16 +147,17 @@ const TranformationForm = ({action, data = null,
         // ép kiểu value sang key
         const imageSize = aspectRatioOptions[value as AspectRatioKey];
 
-        setImage((prev: any) => {
+        setImage((prev: any) => (
             // return object
-            return ({
+            // console.log(prev);
+            {
                 // get value previous and update new value
                 ...prev,
-                aspecRatio: imageSize.aspectRatio,
+                aspectRatio: imageSize.aspectRatio,
                 width: imageSize.width,
                 height: imageSize.height
-            })
-        })
+            }
+        ))
 
         setNewTransformation(TranformationTypes.config);
         return onChangeField(value);
@@ -175,7 +174,7 @@ const TranformationForm = ({action, data = null,
                         [fieldName === 'prompt' ? 'prompt':'to'] : value
                     } 
                 }))
-            }, 1000);
+            }, 1000)();
             return onChangeField(value);
         }
 
