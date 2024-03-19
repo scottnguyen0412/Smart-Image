@@ -44,75 +44,75 @@ export const navLinks = [
   export const plans = [
     {
       _id: 1,
-      name: "Free",
+      name: "Miễn Phí",
       icon: "/assets/icons/free-plan.svg",
       price: 0,
       credits: 20,
       inclusions: [
         {
-          label: "20 Free Credits",
+          label: "20 Tín Dụng Miễn Phí",
           isIncluded: true,
         },
         {
-          label: "Basic Access to Services",
+          label: "Quyền truy cập cơ bản vào dịch vụ",
           isIncluded: true,
         },
         {
-          label: "Priority Customer Support",
+          label: "Hỗ trợ khách hàng ưu tiên",
           isIncluded: false,
         },
         {
-          label: "Priority Updates",
+          label: "Cập nhật ưu tiên",
           isIncluded: false,
         },
       ],
     },
     {
       _id: 2,
-      name: "Pro Package",
+      name: "Gói chuyên nghiệp",
       icon: "/assets/icons/free-plan.svg",
       price: 40,
       credits: 120,
       inclusions: [
         {
-          label: "120 Credits",
+          label: "120 Tín Dụng",
           isIncluded: true,
         },
         {
-          label: "Full Access to Services",
+          label: "Toàn quyền truy cập vào các dịch vụ",
           isIncluded: true,
         },
         {
-          label: "Priority Customer Support",
+          label: "Hỗ trợ khách hàng ưu tiên",
           isIncluded: true,
         },
         {
-          label: "Priority Updates",
+          label: "Cập nhật ưu tiên",
           isIncluded: false,
         },
       ],
     },
     {
       _id: 3,
-      name: "Premium Package",
+      name: "Gói cao cấp",
       icon: "/assets/icons/free-plan.svg",
       price: 199,
       credits: 2000,
       inclusions: [
         {
-          label: "2000 Credits",
+          label: "2000 Tín Dụng",
           isIncluded: true,
         },
         {
-          label: "Full Access to Services",
+          label: "Toàn quyền truy cập vào các dịch vụ",
           isIncluded: true,
         },
         {
-          label: "Priority Customer Support",
+          label: "Hỗ trợ khách hàng ưu tiên",
           isIncluded: true,
         },
         {
-          label: "Priority Updates",
+          label: "Cập nhật ưu tiên",
           isIncluded: true,
         },
       ],
