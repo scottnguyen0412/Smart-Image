@@ -1,6 +1,7 @@
 "use client";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
@@ -58,18 +59,20 @@ const MobileNav = () => {
                           isActive && "gradient-text"
                         } p-18 flex whitespace-nowrap text-dark-700`}
                       >
-                        <Link
-                          href={link.route}
-                          className="sidebar-link cursor-pointer"
-                        >
-                          <Image
-                            src={link.icon}
-                            alt="log"
-                            width={24}
-                            height={24}
-                          />
-                          {link.label}
-                        </Link>
+                        <SheetClose asChild>
+                          <Link
+                            href={link.route}
+                            className="sidebar-link cursor-pointer"
+                          >
+                            <Image
+                              src={link.icon}
+                              alt="log"
+                              width={24}
+                              height={24}
+                            />
+                            {link.label}
+                          </Link>
+                        </SheetClose>
                       </li>
                     );
                   })}
